@@ -1,0 +1,1 @@
+print("Machine Learning projekat inicijalizovan.")
