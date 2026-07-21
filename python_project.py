@@ -37,3 +37,14 @@ print(df.describe())
 
 print("\nMissing values in each column:")
 print(df.isnull().sum())
+
+
+print("\nEncoding categorical variables:")
+
+df["sex"] = df["sex"].map({"Male": 1, "Female": 0})
+df["diabetes"] = df["diabetes"].map({"Yes": 1, "No": 0})
+
+print(df.head())
+
+print("\nDataset information after encoding:")
+df.info()
