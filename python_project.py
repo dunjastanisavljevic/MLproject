@@ -28,3 +28,12 @@ df = pd.read_csv(
 
 print("First five rows of the dataset:")
 print(df.head())
+
+print("\nDataset information:")
+df.info()
+
+print("\nStatistical summary:")
+print(df.describe())
+
+print("\nMissing values in each column:")
+print(df.isnull().sum())
