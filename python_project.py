@@ -48,3 +48,10 @@ print(df.head())
 
 print("\nDataset information after encoding:")
 df.info()
+
+plt.figure(figsize=(5, 4))
+sns.countplot(x="heart_disease", data=df)
+plt.title("Heart Disease Distribution (0 = No, 1 = Yes)")
+plt.xlabel("Heart Disease")
+plt.ylabel("Count")
+plt.show()
