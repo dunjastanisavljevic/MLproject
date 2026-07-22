@@ -55,3 +55,19 @@ plt.title("Heart Disease Distribution (0 = No, 1 = Yes)")
 plt.xlabel("Heart Disease")
 plt.ylabel("Count")
 plt.show()
+
+num_features = ["age", "cholesterol", "bp"]
+
+for col in num_features:
+    plt.figure(figsize=(6, 4))
+    sns.histplot(
+        data=df,
+        x=col,
+        hue="heart_disease",
+        kde=True,
+        bins=30
+    )
+    plt.title(f"{col.capitalize()} Distribution by Heart Disease")
+    plt.xlabel(col)
+    plt.ylabel("Count")
+    plt.show()
