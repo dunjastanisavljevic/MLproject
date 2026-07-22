@@ -71,3 +71,12 @@ for col in num_features:
     plt.xlabel(col)
     plt.ylabel("Count")
     plt.show()
+
+cat_features = ["sex", "diabetes"]
+
+for col in cat_features:
+    plt.figure(figsize=(5, 4))
+    sns.barplot(x=col, y="heart_disease", data=df)
+    plt.title(f"Average Heart Disease Rate by {col}")
+    plt.ylabel("Mean Heart Disease (1 = Yes)")
+    plt.show()
