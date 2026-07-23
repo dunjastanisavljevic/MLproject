@@ -80,3 +80,12 @@ for col in cat_features:
     plt.title(f"Average Heart Disease Rate by {col}")
     plt.ylabel("Mean Heart Disease (1 = Yes)")
     plt.show()
+
+print("\nCorrelation matrix:")
+print(df.corr())
+
+plt.figure(figsize=(8, 6))
+corr = df.corr()
+sns.heatmap(corr, annot=True, fmt=".2f", cmap="coolwarm")
+plt.title("Correlation Heatmap")
+plt.show()
