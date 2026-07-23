@@ -89,3 +89,27 @@ corr = df.corr()
 sns.heatmap(corr, annot=True, fmt=".2f", cmap="coolwarm")
 plt.title("Correlation Heatmap")
 plt.show()
+
+print("\nPreparing data for model training:")
+
+# Separate input features and target
+X = df.drop("heart_disease", axis=1)
+y = df["heart_disease"]
+
+# Split data into 80% training and 20% testing
+X_train, X_test, y_train, y_test = train_test_split(
+    X,
+    y,
+    test_size=0.2,
+    random_state=42,
+    stratify=y
+)
+
+# Scale the features
+scaler = StandardScaler()
+
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+print("Training set shape:", X_train.shape)
+print("Test set shape:", X_test.shape)
