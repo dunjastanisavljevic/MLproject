@@ -12,6 +12,8 @@ from sklearn.metrics import (
     precision_score,
     recall_score,
     f1_score,
+    roc_auc_score,
+    classification_report,
     confusion_matrix,
     ConfusionMatrixDisplay
 )
@@ -113,3 +115,35 @@ X_test = scaler.transform(X_test)
 
 print("Training set shape:", X_train.shape)
 print("Test set shape:", X_test.shape)
+
+print("\nLogistic Regression results:")
+
+# Create and train the model
+logreg = LogisticRegression(max_iter=1000)
+logreg.fit(X_train, y_train)
+
+# Make predictions
+y_pred = logreg.predict(X_test)
+y_proba = logreg.predict_proba(X_test)[:, 1]
+
+# Display evaluation metrics
+print("\nClassification Report:")
+print(classification_report(y_test, y_pred))
+
+print("Accuracy:", accuracy_score(y_test, y_pred))
+print("Precision:", precision_score(y_test, y_pred))
+print("Recall:", recall_score(y_test, y_pred))
+print("F1 Score:", f1_score(y_test, y_pred))
+print("AUC-ROC:", roc_auc_score(y_test, y_proba))
+
+# Display confusion matrix
+cm = confusion_matrix(y_test, y_pred)
+
+disp = ConfusionMatrixDisplay(
+    confusion_matrix=cm,
+    display_labels=["No Disease", "Disease"]
+)
+
+disp.plot(cmap="Blues")
+plt.title("Confusion Matrix - Logistic Regression")
+plt.show()
