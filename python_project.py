@@ -367,3 +367,69 @@ plt.xlabel("Importance Score")
 plt.ylabel("Feature")
 plt.tight_layout()
 plt.show()
+
+print("\nFinal model comparison:")
+
+model_comparison = pd.DataFrame({
+    "Model": [
+        "Logistic Regression",
+        "KNN",
+        "Decision Tree",
+        "Random Forest"
+    ],
+    "Accuracy": [
+        accuracy_score(y_test, y_pred),
+        accuracy_score(y_test, y_pred_knn),
+        accuracy_score(y_test, y_pred_dt),
+        accuracy_score(y_test, y_pred_rf)
+    ],
+    "Precision": [
+        precision_score(y_test, y_pred, zero_division=0),
+        precision_score(y_test, y_pred_knn, zero_division=0),
+        precision_score(y_test, y_pred_dt, zero_division=0),
+        precision_score(y_test, y_pred_rf, zero_division=0)
+    ],
+    "Recall": [
+        recall_score(y_test, y_pred, zero_division=0),
+        recall_score(y_test, y_pred_knn, zero_division=0),
+        recall_score(y_test, y_pred_dt, zero_division=0),
+        recall_score(y_test, y_pred_rf, zero_division=0)
+    ],
+    "F1 Score": [
+        f1_score(y_test, y_pred, zero_division=0),
+        f1_score(y_test, y_pred_knn, zero_division=0),
+        f1_score(y_test, y_pred_dt, zero_division=0),
+        f1_score(y_test, y_pred_rf, zero_division=0)
+    ],
+    "AUC-ROC": [
+        roc_auc_score(y_test, y_proba),
+        roc_auc_score(y_test, y_proba_knn),
+        roc_auc_score(y_test, y_proba_dt),
+        roc_auc_score(y_test, y_proba_rf)
+    ]
+})
+
+print(model_comparison.round(3))
+
+best_model_index = model_comparison["F1 Score"].idxmax()
+best_model_name = model_comparison.loc[
+    best_model_index,
+    "Model"
+]
+
+print("\nBest model based on F1 score:", best_model_name)
+
+comparison_plot = model_comparison.set_index("Model")
+
+comparison_plot.plot(
+    kind="bar",
+    figsize=(11, 6)
+)
+
+plt.title("Model Performance Comparison")
+plt.ylabel("Score")
+plt.ylim(0.0, 1.0)
+plt.xticks(rotation=15)
+plt.legend(loc="lower right")
+plt.tight_layout()
+plt.show()
