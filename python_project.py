@@ -215,3 +215,48 @@ disp_knn = ConfusionMatrixDisplay(
 disp_knn.plot(cmap="Oranges")
 plt.title("Confusion Matrix - KNN")
 plt.show()
+
+print("\nDecision Tree results:")
+
+# Create and train the Decision Tree model
+decision_tree = DecisionTreeClassifier(
+    max_depth=5,
+    random_state=42
+)
+
+decision_tree.fit(X_train, y_train)
+
+# Make predictions
+y_pred_dt = decision_tree.predict(X_test)
+y_proba_dt = decision_tree.predict_proba(X_test)[:, 1]
+
+# Display evaluation metrics
+print("\nClassification Report:")
+print(classification_report(y_test, y_pred_dt, zero_division=0))
+
+print("Accuracy:", accuracy_score(y_test, y_pred_dt))
+print(
+    "Precision:",
+    precision_score(y_test, y_pred_dt, zero_division=0)
+)
+print(
+    "Recall:",
+    recall_score(y_test, y_pred_dt, zero_division=0)
+)
+print(
+    "F1 Score:",
+    f1_score(y_test, y_pred_dt, zero_division=0)
+)
+print("AUC-ROC:", roc_auc_score(y_test, y_proba_dt))
+
+# Display confusion matrix
+cm_dt = confusion_matrix(y_test, y_pred_dt)
+
+disp_dt = ConfusionMatrixDisplay(
+    confusion_matrix=cm_dt,
+    display_labels=["No Disease", "Disease"]
+)
+
+disp_dt.plot(cmap="Purples")
+plt.title("Confusion Matrix - Decision Tree")
+plt.show()
