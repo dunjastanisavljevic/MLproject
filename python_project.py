@@ -174,3 +174,44 @@ disp_rf = ConfusionMatrixDisplay(
 disp_rf.plot(cmap="Greens")
 plt.title("Confusion Matrix - Random Forest")
 plt.show()
+
+print("\nK-Nearest Neighbors results:")
+
+# Create and train the KNN model
+knn = KNeighborsClassifier(n_neighbors=5)
+knn.fit(X_train, y_train)
+
+# Make predictions
+y_pred_knn = knn.predict(X_test)
+y_proba_knn = knn.predict_proba(X_test)[:, 1]
+
+# Display evaluation metrics
+print("\nClassification Report:")
+print(classification_report(y_test, y_pred_knn, zero_division=0))
+
+print("Accuracy:", accuracy_score(y_test, y_pred_knn))
+print(
+    "Precision:",
+    precision_score(y_test, y_pred_knn, zero_division=0)
+)
+print(
+    "Recall:",
+    recall_score(y_test, y_pred_knn, zero_division=0)
+)
+print(
+    "F1 Score:",
+    f1_score(y_test, y_pred_knn, zero_division=0)
+)
+print("AUC-ROC:", roc_auc_score(y_test, y_proba_knn))
+
+# Display confusion matrix
+cm_knn = confusion_matrix(y_test, y_pred_knn)
+
+disp_knn = ConfusionMatrixDisplay(
+    confusion_matrix=cm_knn,
+    display_labels=["No Disease", "Disease"]
+)
+
+disp_knn.plot(cmap="Oranges")
+plt.title("Confusion Matrix - KNN")
+plt.show()
