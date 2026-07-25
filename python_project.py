@@ -433,3 +433,46 @@ plt.xticks(rotation=15)
 plt.legend(loc="lower right")
 plt.tight_layout()
 plt.show()
+
+print("\nMisclassification error analysis:")
+
+predictions_by_model = {
+    "Logistic Regression": y_pred,
+    "KNN": y_pred_knn,
+    "Decision Tree": y_pred_dt,
+    "Random Forest": y_pred_rf
+}
+
+best_predictions = predictions_by_model[best_model_name]
+
+test_cases = df.loc[y_test.index, X.columns].copy()
+test_cases["actual"] = y_test.to_numpy()
+test_cases["predicted"] = best_predictions
+
+incorrect_predictions = test_cases[
+    test_cases["actual"] != test_cases["predicted"]
+    ]
+
+false_positives = incorrect_predictions[
+    (incorrect_predictions["actual"] == 0)
+    & (incorrect_predictions["predicted"] == 1)
+    ]
+
+false_negatives = incorrect_predictions[
+    (incorrect_predictions["actual"] == 1)
+    & (incorrect_predictions["predicted"] == 0)
+    ]
+
+print("Model used for error analysis:", best_model_name)
+print("Total incorrect predictions:", len(incorrect_predictions))
+print("False positives:", len(false_positives))
+print("False negatives:", len(false_negatives))
+
+print("\nFirst ten incorrectly classified cases:")
+print(incorrect_predictions.head(10))
+
+print("\nAverage feature values for false positives:")
+print(false_positives[X.columns].mean())
+
+print("\nAverage feature values for false negatives:")
+print(false_negatives[X.columns].mean())
