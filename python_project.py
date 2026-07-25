@@ -321,3 +321,49 @@ for model_name, model_for_curve in models_for_learning_curves.items():
     plt.grid(True)
     plt.tight_layout()
     plt.show()
+
+print("\nFeature importance analysis:")
+
+# Logistic Regression coefficients
+logreg_coefficients = pd.Series(
+    logreg.coef_[0],
+    index=X.columns
+)
+
+logreg_coefficients = logreg_coefficients.reindex(
+    logreg_coefficients.abs().sort_values(ascending=False).index
+)
+
+print("\nLogistic Regression coefficients:")
+print(logreg_coefficients)
+
+plt.figure(figsize=(8, 5))
+sns.barplot(
+    x=logreg_coefficients.values,
+    y=logreg_coefficients.index
+)
+plt.title("Feature Coefficients - Logistic Regression")
+plt.xlabel("Coefficient")
+plt.ylabel("Feature")
+plt.tight_layout()
+plt.show()
+
+# Random Forest feature importance
+rf_importance = pd.Series(
+    rf.feature_importances_,
+    index=X.columns
+).sort_values(ascending=False)
+
+print("\nRandom Forest feature importance:")
+print(rf_importance)
+
+plt.figure(figsize=(8, 5))
+sns.barplot(
+    x=rf_importance.values,
+    y=rf_importance.index
+)
+plt.title("Feature Importances - Random Forest")
+plt.xlabel("Importance Score")
+plt.ylabel("Feature")
+plt.tight_layout()
+plt.show()
