@@ -5,8 +5,10 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, learning_curve
 from sklearn.preprocessing import StandardScaler
+from sklearn.pipeline import make_pipeline
+
 from sklearn.metrics import (
     accuracy_score,
     precision_score,
@@ -260,3 +262,62 @@ disp_dt = ConfusionMatrixDisplay(
 disp_dt.plot(cmap="Purples")
 plt.title("Confusion Matrix - Decision Tree")
 plt.show()
+
+print("\nGenerating learning curves:")
+
+models_for_learning_curves = {
+    "Logistic Regression": make_pipeline(
+        StandardScaler(),
+        LogisticRegression(max_iter=1000)
+    ),
+    "KNN": make_pipeline(
+        StandardScaler(),
+        KNeighborsClassifier(n_neighbors=5)
+    ),
+    "Decision Tree": DecisionTreeClassifier(
+        max_depth=5,
+        random_state=42
+    ),
+    "Random Forest": RandomForestClassifier(
+        n_estimators=100,
+        random_state=42
+    )
+}
+
+training_sizes = np.linspace(0.1, 1.0, 5)
+
+for model_name, model_for_curve in models_for_learning_curves.items():
+    sizes, training_scores, validation_scores = learning_curve(
+        model_for_curve,
+        X,
+        y,
+        train_sizes=training_sizes,
+        cv=5,
+        scoring="accuracy"
+    )
+
+    training_mean = np.mean(training_scores, axis=1)
+    validation_mean = np.mean(validation_scores, axis=1)
+
+    plt.figure(figsize=(7, 5))
+    plt.plot(
+        sizes,
+        training_mean,
+        marker="o",
+        label="Training accuracy"
+    )
+    plt.plot(
+        sizes,
+        validation_mean,
+        marker="o",
+        label="Validation accuracy"
+    )
+
+    plt.title(f"Learning Curve - {model_name}")
+    plt.xlabel("Training Set Size")
+    plt.ylabel("Accuracy")
+    plt.ylim(0.0, 1.05)
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
