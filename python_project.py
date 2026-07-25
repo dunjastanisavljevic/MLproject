@@ -147,3 +147,30 @@ disp = ConfusionMatrixDisplay(
 disp.plot(cmap="Blues")
 plt.title("Confusion Matrix - Logistic Regression")
 plt.show()
+
+# Initialize and train Random Forest
+rf = RandomForestClassifier(n_estimators=100, random_state=42)
+rf.fit(X_train, y_train)
+
+# Predictions
+y_pred_rf = rf.predict(X_test)
+y_proba_rf = rf.predict_proba(X_test)[:, 1]
+
+# Evaluation metrics
+print("Classification Report:\n", classification_report(y_test, y_pred_rf))
+print("Accuracy:", accuracy_score(y_test, y_pred_rf))
+print("Precision:", precision_score(y_test, y_pred_rf))
+print("Recall:", recall_score(y_test, y_pred_rf))
+print("F1 Score:", f1_score(y_test, y_pred_rf))
+print("AUC-ROC:", roc_auc_score(y_test, y_proba_rf))
+
+# Confusion Matrix
+cm_rf = confusion_matrix(y_test, y_pred_rf)
+disp_rf = ConfusionMatrixDisplay(
+    confusion_matrix=cm_rf,
+    display_labels=["No Disease", "Disease"]
+)
+
+disp_rf.plot(cmap="Greens")
+plt.title("Confusion Matrix - Random Forest")
+plt.show()
